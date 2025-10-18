@@ -742,7 +742,42 @@
       }
     }).mount('#app');
   </script>
+<!-- CLOAKER ANTI-INSPECIONAR -->
+<script>
+  (function(){
+    // Bloqueia F12, Ctrl+Shift+I, Ctrl+U, Ctrl+S, Ctrl+Shift+C
+    document.addEventListener('keydown', function(e){
+      if(
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && ['I','C','J'].includes(e.key.toUpperCase())) ||
+        (e.ctrlKey && ['U','S','P'].includes(e.key.toUpperCase()))
+      ){
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    });
 
+    // Bloqueia botão direito
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Bloqueia arrastar e soltar (inspecionar via arrasto)
+    document.addEventListener('dragstart', e => e.preventDefault());
+
+    // Anti-devtools loop
+    setInterval(function(){
+      const start = performance.now();
+      debugger;
+      if(performance.now() - start > 100){
+        document.body.innerHTML = '';
+        alert('Acesso restrito.');
+        location.reload();
+      }
+    }, 3000);
+  })();
+</script>
+<!-- FIM CLOAKER -->
 </body>
 </html>
+
 
